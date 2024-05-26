@@ -1,6 +1,8 @@
 import { json, LoaderFunction } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 import { useState } from 'react';
+import styled from '@emotion/styled';
+
 interface Story {
   id: number;
   title: string;
@@ -13,7 +15,46 @@ interface Story {
 interface NewsProps {
   stories: Story[];
 }
+const Container = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+const MainTitle = styled.h1`
+  padding: 5px;
+  background-color: #ff6600;
+  margin: 0;
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 20px;
+`;
 
+const NewsTitle = styled.h3`
+  font-size: 18px;
+  margin-bottom: 5px;
+`;
+
+const NewsLink = styled.a`
+  text-decoration: none;
+  color: #000000;
+  font-family: Verdana, Geneva, sans-serif;
+  font-weight: lighter;
+`;
+const Button = styled.button`
+  padding: 5px;
+  margin-top: 5px;
+  border: 1px solid #ff6600;
+  background-color: #ffffff;
+  color: #ff6600;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 13px;
+  &:hover {
+    background-color: #ff6600;
+    color: #ffffff;
+  }
+`;
+const Score = styled.p`
+  margin-right: 5px;
+`;
 export let loader: LoaderFunction = async () => {
   try {
     const response = await fetch(
@@ -48,58 +89,37 @@ export default function News() {
   };
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center' }}>
-      <div style={{ width: '80%', maxWidth: '800px' }}>
-        <h1
-          style={{
-            padding: '5px',
-            backgroundColor: '#FF6600',
-            margin: 0,
-            fontFamily: 'Verdana, Geneva, sans-serif',
-            fontSize: '20px',
-          }}
-        >
-          Top Stories
-        </h1>
-
+    <Container>
+      <div css={{ width: '80%', maxWidth: '800px' }}>
+        <MainTitle>Top Stories</MainTitle>
         {storiesWithUrl.slice(0, visibleStories).map((story) => (
           <div
             key={story.id}
-            style={{
-              borderBottom: '1px solid #dcdcdc',
+            css={{
+              borderBottom: '1px solid #dcdcdc', 
               padding: '10px',
               backgroundColor: '#f6f6ef',
             }}
           >
-            <h3 style={{ fontSize: '18px', marginBottom: '5px' }}>
-              <a
-                href={story.url}
-                style={{
-                  textDecoration: 'none',
-                  color: '#000000',
-                  fontFamily: 'Verdana, Geneva, sans-serif',
-                  fontWeight: 'lighter',
-                }}
-              >
-                {story.title}
-              </a>
-            </h3>
+            <NewsTitle>
+              <NewsLink href={story.url}>{story.title}</NewsLink>
+            </NewsTitle>
             <div
-              style={{
+              css={{
                 display: 'flex',
                 flexDirection: 'row',
                 color: '#b5b4b0',
                 justifyContent: 'space-between',
               }}
             >
-              <p style={{ marginRight: '5px' }}>
+              <Score>
                 {story.score !== 0
                   ? story.score === 1
                     ? story.score + ' point'
                     : story.score + ' points'
                   : 'no points'}{' '}
                 by {story.by}
-              </p>
+              </Score>
               <p>
                 {story.descendants && parseInt(story.descendants) !== 0
                   ? parseInt(story.descendants) === 1
@@ -111,31 +131,9 @@ export default function News() {
           </div>
         ))}
         {visibleStories < storiesWithUrl.length && (
-          <button
-            onClick={showMore}
-            style={{
-              padding: '5px',
-              marginTop: '5px',
-              border: '1px solid #FF6600',
-              backgroundColor: '#ffffff',
-              color: '#FF6600',
-              cursor: 'pointer',
-              fontWeight: 'bold',
-              fontSize: '13px',
-            }}
-            onMouseOver={(e) => {
-              e.currentTarget.style.backgroundColor = '#FF6600';
-              e.currentTarget.style.color = '#ffffff';
-            }}
-            onMouseOut={(e) => {
-              e.currentTarget.style.backgroundColor = '#ffffff';
-              e.currentTarget.style.color = '#FF6600';
-            }}
-          >
-            Show More
-          </button>
+          <Button onClick={showMore}>Show More</Button>
         )}
       </div>
-    </div>
+    </Container>
   );
 }

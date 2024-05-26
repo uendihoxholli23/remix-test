@@ -35,6 +35,8 @@ Make sure to deploy the output of `npm run build`
 - `build/server`
 - `build/client`
 
-### Deploy version: remix-test-app-beryl.vercel.app
+### Deploy version
+
+https://remix-test-app-beryl.vercel.app/
 
 API: https://hacker-news.firebaseio.com/v0/item/40477165.json

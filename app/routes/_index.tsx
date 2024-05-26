@@ -87,7 +87,9 @@ export default function News() {
   const showMore = () => {
     setVisibleStories((prev) => prev + 5);
   };
-
+  if (process.env.NODE_ENV === 'development') {
+    throw new Error('Sentry Test Error');
+  }
   return (
     <Container>
       <div css={{ width: '80%', maxWidth: '800px' }}>
@@ -96,7 +98,7 @@ export default function News() {
           <div
             key={story.id}
             css={{
-              borderBottom: '1px solid #dcdcdc', 
+              borderBottom: '1px solid #dcdcdc',
               padding: '10px',
               backgroundColor: '#f6f6ef',
             }}

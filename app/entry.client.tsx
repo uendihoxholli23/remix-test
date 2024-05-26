@@ -23,7 +23,7 @@ Sentry.init({
     }),
     Sentry.replayIntegration(),
   ],
-  tracePropagationTargets: ['localhost: 3000'],
+  tracePropagationTargets: ['localhost: 3000', 'localhost:5173'],
 });
 
 startTransition(() => {
